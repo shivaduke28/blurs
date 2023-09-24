@@ -36,7 +36,7 @@ Shader "Blur/TwoPassGaussianBlurOptimized"
             float w1 = un_normalized_gaussian(delta * p, _Sigma);
             float w2 = un_normalized_gaussian(delta * (p + 1.0), _Sigma);
             weight = w1 + w2;
-            return delta * (p + w1 / weight);
+            return delta * (p + w2 / weight);
         }
         ENDCG
 
