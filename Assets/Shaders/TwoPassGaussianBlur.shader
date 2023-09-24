@@ -89,7 +89,7 @@ Shader "Blur/TwoPassGaussianBlur"
                 float sum = 0;
                 for (int i = -KERNEL_RADIUS; i <= KERNEL_RADIUS; i++)
                 {
-                    float y = (float)i * _MainTex_TexelSize.x;
+                    float y = (float)i * _MainTex_TexelSize.y;
                     float weight = un_normalized_gaussian(y, _Sigma);
                     color += tex2Dlod(_MainTex, float4(uv + float2(0, y), 0, 0)) * weight;
                     sum += weight;

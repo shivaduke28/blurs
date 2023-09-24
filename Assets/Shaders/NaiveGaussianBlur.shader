@@ -3,7 +3,6 @@ Shader "Blur/NaiveGaussianBlur"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Sigma("sigma", Range(0.0001, 1)) = 0.001
     }
     SubShader
     {
@@ -35,6 +34,9 @@ Shader "Blur/NaiveGaussianBlur"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
+                #if UNITY_UV_STARTS_AT_TOP
+                o.uv.y = 1 - o.uv.y;
+                #endif
                 return o;
             }
 
@@ -68,7 +70,7 @@ Shader "Blur/NaiveGaussianBlur"
                     {
                         float y = (float)j * _MainTex_TexelSize.y;
                         float weight = un_normalized_gaussian_2d(x, y, _Sigma);
-                        color += tex2D(_MainTex, float4(uv + float2(x, y), 0, 0)) * weight;
+                        color += tex2Dlod(_MainTex, float4(uv + float2(x, y), 0, 0)) * weight;
                         sum += weight;
                     }
                 }
