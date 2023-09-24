@@ -73,14 +73,14 @@ Shader "Blur/TwoPassGaussianBlurOptimized"
 
                 float weight1;
                 float offset1 = get_offset(delta, 1.0, weight1);
-                color += _MainTex.SampleBias(linear_clamp_sampler, uv + float2(offset1, 0), 1) * weight1;
-                color += _MainTex.SampleBias(linear_clamp_sampler, uv - float2(offset1, 0), 1) * weight1;
+                color += _MainTex.SampleBias(linear_clamp_sampler, uv + float2(offset1, 0), 0) * weight1;
+                color += _MainTex.SampleBias(linear_clamp_sampler, uv - float2(offset1, 0), 0) * weight1;
                 sum += weight1 * 2.0;
 
                 float weight2;
                 float offset2 = get_offset(delta, 3.0, weight2);
-                color += _MainTex.SampleBias(linear_clamp_sampler, uv + float2(offset2, 0), 1) * weight2;
-                color += _MainTex.SampleBias(linear_clamp_sampler, uv - float2(offset2, 0), 1) * weight2;
+                color += _MainTex.SampleBias(linear_clamp_sampler, uv + float2(offset2, 0), 0) * weight2;
+                color += _MainTex.SampleBias(linear_clamp_sampler, uv - float2(offset2, 0), 0) * weight2;
                 sum += weight2 * 2.0;
                 return color / sum;
             }
@@ -113,14 +113,14 @@ Shader "Blur/TwoPassGaussianBlurOptimized"
 
                 float weight1;
                 float offset1 = get_offset(delta, 1.0, weight1);
-                color += _MainTex.SampleBias(linear_clamp_sampler, uv + float2(0, offset1), 1) * weight1;
-                color += _MainTex.SampleBias(linear_clamp_sampler, uv - float2(0, offset1), 1) * weight1;
+                color += _MainTex.SampleBias(linear_clamp_sampler, uv + float2(0, offset1), 0) * weight1;
+                color += _MainTex.SampleBias(linear_clamp_sampler, uv - float2(0, offset1), 0) * weight1;
                 sum += weight1 * 2.0;
 
                 float weight2;
                 float offset2 = get_offset(delta, 3.0, weight2);
-                color += _MainTex.SampleBias(linear_clamp_sampler, uv + float2(0, offset2), 1) * weight2;
-                color += _MainTex.SampleBias(linear_clamp_sampler, uv - float2(0, offset2), 1) * weight2;
+                color += _MainTex.SampleBias(linear_clamp_sampler, uv + float2(0, offset2), 0) * weight2;
+                color += _MainTex.SampleBias(linear_clamp_sampler, uv - float2(0, offset2), 0) * weight2;
                 sum += weight2 * 2.0;
                 return color / sum;
             }
