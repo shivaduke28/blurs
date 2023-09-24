@@ -3,7 +3,7 @@ using UnityEngine.Rendering;
 
 namespace Blur
 {
-    public class TwoPassGaussianBlur : MonoBehaviour
+    public class NaiveGaussianBlur : MonoBehaviour
     {
         static readonly int Temp1Id = Shader.PropertyToID("_Temp1");
 
@@ -17,10 +17,8 @@ namespace Blur
         void OnEnable()
         {
             mainCamera = Camera.main;
-            if (mainCamera == null)
-            {
-                return;
-            }
+            if (mainCamera == null) return;
+            if (shader == null) return;
             BuildCommandBuffer();
             mainCamera.AddCommandBuffer(CameraEvent.BeforeImageEffects, commandBuffer);
         }
@@ -44,10 +42,9 @@ namespace Blur
                 commandBuffer = new CommandBuffer();
                 commandBuffer.name = shader.name;
                 commandBuffer.BeginSample(shader.name);
-                commandBuffer.GetTemporaryRT(Temp1Id, -1, -1, 0, FilterMode.Bilinear);
-                // NOTE: _MainTex in this pass is NOT Bilinear filtered. Use Bilinear SampleState in shader!
-                commandBuffer.Blit(BuiltinRenderTextureType.CurrentActive, Temp1Id, material, 0);
-                commandBuffer.Blit(Temp1Id, BuiltinRenderTextureType.None, material, 1);
+                commandBuffer.GetTemporaryRT(Temp1Id, -1, -1, 0);
+                commandBuffer.Blit(BuiltinRenderTextureType.CurrentActive, Temp1Id);
+                commandBuffer.Blit(Temp1Id, BuiltinRenderTextureType.None, material, 0);
                 commandBuffer.ReleaseTemporaryRT(Temp1Id);
                 commandBuffer.EndSample(shader.name);
             }
